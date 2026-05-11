@@ -261,7 +261,7 @@ init() {
     this.elements.stationSearch.addEventListener('input', this.debounce(this.filterStations.bind(this), 300));
     
     // Add keyboard controls
-    this.setupKeyboardControls(); // <-- ADD THIS LINE
+    this.setupKeyboardControls();
     
     // Add window resize handler for category expansion
     this.handleResize = this.debounce(() => {
@@ -320,13 +320,36 @@ setupEventListeners() {
 
 setupKeyboardControls() {
     document.addEventListener('keydown', (e) => {
-        // Check if spacebar is pressed (keyCode 32 or key ' ')
+        // Spacebar for play/pause
         if (e.code === 'Space' || e.key === ' ' || e.keyCode === 32) {
-            // Prevent default spacebar behavior (scrolling the page)
             e.preventDefault();
-            
-            // Toggle play/pause
             this.togglePlayback();
+        }
+        
+        // Arrow Up for volume up
+        if (e.code === 'ArrowUp' || e.key === 'ArrowUp' || e.keyCode === 38) {
+            e.preventDefault();
+            let newVolume = Math.min(1, this.elements.audio.volume + 0.05);
+            this.elements.audio.volume = newVolume;
+            this.elements.audio.muted = false;
+            this.lastVolume = newVolume;
+            this.elements.volumeSlider.value = newVolume;
+            this.updateVolumeIcon();
+        }
+        
+        // Arrow Down for volume down
+        if (e.code === 'ArrowDown' || e.key === 'ArrowDown' || e.keyCode === 40) {
+            e.preventDefault();
+            let newVolume = Math.max(0, this.elements.audio.volume - 0.05);
+            this.elements.audio.volume = newVolume;
+            if (newVolume === 0) {
+                this.elements.audio.muted = true;
+            } else {
+                this.elements.audio.muted = false;
+                this.lastVolume = newVolume;
+            }
+            this.elements.volumeSlider.value = newVolume;
+            this.updateVolumeIcon();
         }
     });
 }
