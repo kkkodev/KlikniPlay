@@ -260,16 +260,16 @@ init() {
     // Setup search functionality
     this.elements.stationSearch.addEventListener('input', this.debounce(this.filterStations.bind(this), 300));
     
+    // Add keyboard controls
+    this.setupKeyboardControls(); // <-- ADD THIS LINE
+    
     // Add window resize handler for category expansion
-this.handleResize = this.debounce(() => {
-    if (!this.elements.stationSearch.value.trim()) {
-        // First apply genre filter to ensure we're working with correct stations
-        this.applyGenreFilter(); 
-        
-        // Then setup expandable categories
-        this.setupExpandableCategories();
-    }
-}, 200);
+    this.handleResize = this.debounce(() => {
+        if (!this.elements.stationSearch.value.trim()) {
+            this.applyGenreFilter(); 
+            this.setupExpandableCategories();
+        }
+    }, 200);
     window.addEventListener('resize', this.handleResize);
     
     this.setupInitialUI();
@@ -318,6 +318,18 @@ setupEventListeners() {
     window.addEventListener('beforeunload', this.cleanupResources);
 }
 
+setupKeyboardControls() {
+    document.addEventListener('keydown', (e) => {
+        // Check if spacebar is pressed (keyCode 32 or key ' ')
+        if (e.code === 'Space' || e.key === ' ' || e.keyCode === 32) {
+            // Prevent default spacebar behavior (scrolling the page)
+            e.preventDefault();
+            
+            // Toggle play/pause
+            this.togglePlayback();
+        }
+    });
+}
     // Event Handlers
     handleSearchContainerClick = (e) => {
         if (!this.elements.searchContainer.classList.contains('active')) {
