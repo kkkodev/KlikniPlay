@@ -4,7 +4,7 @@ const CONFIG = {
     SCROLLBAR_HIDE_DELAY: 1500,
     COLLAPSED_HEIGHT: 155,
     METADATA_CHECK_INTERVAL: 5000,
-    METADATA_PROXY: 'https://radiometadata.kosta04miletic.workers.dev',
+    METADATA_PROXY: 'https://radiometadata.klikniplay.workers.dev',
 };
 
 // Theme and Favicon Manager
